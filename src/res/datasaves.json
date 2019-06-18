@@ -1,0 +1,55 @@
+[
+    {
+        "1": {
+            "server_name": "test",
+            "parties": {
+                "1": {
+                "party_name": "sample party",
+                "slots": 5,
+                "map": {
+                    "path": "path to map",
+                    "countries": {
+                    "1": {
+                        "name": "country name",
+                        "id": "ES",
+                        "color": "#000",
+                        "flag": "path to flag",
+                        "stats": {
+                        "population": 1000,
+                        "attack_points": 5,
+                        "defend_points": 8
+                        },
+                        "buildings": [
+                        {
+                            "1": 1
+                        }
+                        ],
+                        "troops": [
+                        {
+                            "1": 88
+                        }
+                        ]
+                    }
+                    }
+                },
+                "players": [
+                    {
+                    "1": {
+                        "name": "me",
+                        "empire": "megabot5000",
+                        "color": "#555",
+                        "money": 9999,
+                        "capital": 1,
+                        "countries": [
+                        {
+                            "id": 1
+                        }
+                        ]
+                    }
+                    }
+                ]
+                }
+            }
+        }
+    }
+]

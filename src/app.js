@@ -1,29 +1,35 @@
-/**
- * A ping pong bot, whenever you send "ping", it replies "pong".
- */
+"use strict";
 
-// Import the discord.js module
+require('dotenv').config();
 const Discord = require('discord.js');
 
-// Create an instance of a Discord client
 const client = new Discord.Client();
+const PREFIX = '> '
+const embeds = require("./embeds.js")
 
-/**
- * The ready event is vital, it means that only _after_ this will your bot start reacting to information
- * received from Discord
- */
 client.on('ready', () => {
-  console.log('I am ready!');
+  console.log('Assembling weapons...');
+  console.log('Setting up the terrain...');
+  console.log(`Captain! ${client.user.tag} At your orders!`);
 });
 
-// Create an event listener for messages
-client.on('message', message => {
-  // If the message is "ping"
-  if (message.content === 'ping') {
-    // Send "pong" to the same channel
-    message.channel.send('pong');
-  }
+client.on('message', (message) => {
+    if(message.author.equals(client.user)) return;
+    if(!message.content.startsWith(PREFIX)) return;
+
+    var args = message.content.substring(PREFIX.length).split(" ");
+
+    switch (args[0].toLowerCase()) {
+        case "owo":
+            message.channel.sendMessage("UwU");
+            break;
+    
+        default:
+            // Unknown message
+            message.channel.send("Unknown command!");
+            break;
+    }
 });
 
-// Log our bot in using the token from https://discordapp.com/developers/applications/me
-client.login('your token here');
+
+client.login(process.env.USER_TOKEN);
