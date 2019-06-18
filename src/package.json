@@ -1,0 +1,30 @@
+{
+  "name": "warbot",
+  "version": "1.0.0",
+  "description": "Just a Discord WARBOT.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neoxelox/warbot.git"
+  },
+  "keywords": [
+    "discord",
+    "javascript",
+    "war",
+    "warbot",
+    "bot",
+    "neoxelox"
+  ],
+  "author": "Alex (Neoxelox)",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Neoxelox/warbot/issues"
+  },
+  "homepage": "https://github.com/Neoxelox/warbot#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  }
+}
