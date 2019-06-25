@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/Neoxelox/warbot#readme",
   "dependencies": {
+    "colors": "^1.3.3",
     "discord.js": "^11.5.1",
-    "dotenv": "^8.0.0"
+    "dotenv": "^8.0.0",
+    "node-fetch": "^2.6.0"
   }
 }
