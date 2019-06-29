@@ -10,3 +10,5 @@ Just a Discord WARBOT.
 
 
 or ```npm install```
+
+**Note:** The bot generates a log, which by default prints to the console. If you want a permanent log file run the bot with ```> something.log``` parameter.
