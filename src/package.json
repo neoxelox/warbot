@@ -4,7 +4,8 @@
   "description": "Just a Discord WARBOT.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -29,5 +30,8 @@
     "discord.js": "^11.5.1",
     "dotenv": "^8.0.0",
     "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
   }
 }
