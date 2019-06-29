@@ -5,5 +5,8 @@ Just a Discord WARBOT.
 - ```.env``` file inside ```/src``` with ```USER_TOKEN=(discord generated token)```
 - dotenv package
 - discord.js package
+- colors package
+- node-fetch package
+
 
 or ```npm install```
