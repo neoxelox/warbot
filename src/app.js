@@ -2,7 +2,7 @@
 
 require('dotenv').config();
 const Discord = require('discord.js');
-const colors = require('colors')
+const colors = require('colors');
 
 const client = new Discord.Client();
 const PREFIX = '> ';
@@ -34,8 +34,11 @@ client.on('message', (message) => {
         case commands.fortune_name:
             commands.fortune(message,args);
             break;
+        case commands.create_name:
+            commands.create(message,args);
+            break;
         default:
-            // Unknown message
+            // Unknown command
             message.channel.send(`**Unknown command!** <@${message.author.id}>, type ** *> help* ** .`);
             console.log(colors.bgYellow.white.bold(" WARNING ") + colors.bgMagenta.white("", message.createdAt.toLocaleString(), "") + colors.bgCyan.white(" TO ") + colors.bgGreen.white("", message.author.username,"") + colors.bgBlack.white(" Unknown command! "));
             break;

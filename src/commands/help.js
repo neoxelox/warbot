@@ -10,6 +10,7 @@ function help(message, args) {
     helpEmbed.description += `❓ ***> ${commands.help_name}*** \n \`\`\`fix\n${commands.help_description}\n\`\`\``;
     helpEmbed.description += `🤖 ***> ${commands.ping_name}*** \n \`\`\`css\n${commands.ping_description}\n\`\`\``;
     helpEmbed.description += `✨ ***> ${commands.fortune_name}*** \n \`\`\`fix\n${commands.fortune_description}\n\`\`\``;
+    helpEmbed.description += `➕ ***> ${commands.create_name}*** \n \`\`\`css\n${commands.create_description}\n\`\`\``;
 
     message.channel.send(helpEmbed);
 }

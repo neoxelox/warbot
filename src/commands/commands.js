@@ -11,5 +11,9 @@ module.exports = {
 
     help: require("./help.js"),
     help_name: "help",
-    help_description: "Well, you are actually here."
+    help_description: "Well, you are actually here.",
+
+    create: require("./create.js"),
+    create_name: "create",
+    create_description: "Creates a new party on the actual server."
 };
