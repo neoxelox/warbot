@@ -37,6 +37,10 @@ client.on('message', (message) => {
         case commands.create_name:
             commands.create(message,args);
             break;
+        // TESTS
+        case commands.test_name:
+            commands.test(message,args);
+            break;
         default:
             // Unknown command
             message.channel.send(`**Unknown command!** <@${message.author.id}>, type ** *> help* ** .`);

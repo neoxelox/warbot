@@ -15,5 +15,9 @@ module.exports = {
 
     create: require("./create.js"),
     create_name: "create",
-    create_description: "Creates a new party on the actual server."
+    create_description: "Creates a new party of WARBOT.",
+
+    test: require("./test.js"),
+    test_name: "test",
+    test_description: "HIDDEN! JUST FOR TESTING!"
 };

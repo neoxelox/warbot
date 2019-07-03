@@ -3,10 +3,13 @@ Just a Discord WARBOT.
 
 ### Requirements
 - ```.env``` file inside ```/src``` with ```USER_TOKEN=(discord generated token)```
-- dotenv package
-- discord.js package
-- colors package
-- node-fetch package
+##### Node packages
+- dotenv
+- discord.js
+- colors
+- node-fetch
+- nedb
+
 
 
 or ```npm install```
