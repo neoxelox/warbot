@@ -22,6 +22,12 @@ module.exports = {
     create_name: "create",
     create_arg_1: "Party name",
     create_arg_2: "Slots",
-    create_arg_3: "Password or nothing",
-    create_description: "Creates a new party of WARBOT."
+    create_arg_3: "Password if any",
+    create_description: "Creates a new party of WARBOT.",
+
+    delete: require("./delete.js"),
+    delete_name: "delete",
+    delete_arg_1: "Party name/id",
+    delete_arg_2: "Password if any",
+    delete_description: "Deletes an existing party of WARBOT."
 };

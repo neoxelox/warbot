@@ -29,7 +29,7 @@ async function create(message, args, parties) {
                     newParty.map.countries = JSON.parse(await readFile("../src/resources/countries.json"));
                     
                     parties.insert(newParty, (err, newDoc) => {
-                        if(!err) message.channel.send(`😀 **Successfully created a new WARBOT Party \`${newParty.name}\` with id \`${newParty.id}\` and maximum \`${newParty.slots}\` players. \n Type \`> join ${newParty.id}\` (or with the name) to join the party, and \`> status ${newParty.id}\` (or with the name) to see the currernt status of the party.**`);
+                        if(!err) message.channel.send(`**Successfully created a new WARBOT Party \`${newParty.name}\` with id \`${newParty.id}\` and maximum \`${newParty.slots}\` players. 😀 \n Type: \n \`> join ${newParty.id}\` (or with the name) to join the party \n \`> status ${newParty.id}\` (or with the name) to see the current status of the party**`);
                     });
                 });
             } catch (error) {

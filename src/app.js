@@ -47,6 +47,9 @@ client.on('message', (message) => {
         case commands.create_name:
             commands.create(message,args,parties);
             break;
+        case commands.delete_name:
+            commands.delete(message,args,parties);
+            break;
         default:
             // Unknown command
             message.channel.send(`**Unknown command!** <@${message.author.id}>, type ** *> help* ** .`);
