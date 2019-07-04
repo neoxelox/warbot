@@ -6,7 +6,7 @@ const {RichEmbed} = require('discord.js');
 const readFile = promisify(fs.readFile);
 //const writeFile = promisify(fs.writeFile);
 
-async function test(message, args) {
+async function see(message, args) {
     let countries = JSON.parse(await readFile("../src/resources/countries.json"));
     let country;
     if(args[1] === undefined) {country = randomProperty(countries);}
@@ -14,7 +14,7 @@ async function test(message, args) {
         country = countries[args[1].toUpperCase()];
         if(country === undefined) {
             let inverse = JSON.parse(await readFile("../src/resources/inverse.json"));
-            country = countries[inverse[args[1][0].toUpperCase() + args[1].slice(1)]];
+            country = countries[inverse[args[1][0].toUpperCase() + args[1].slice(1).replace(/-|_/g, " ")]];
         }
     }
     if(country != undefined) {
@@ -34,4 +34,4 @@ var randomProperty = function (obj) {
     return obj[keys[ keys.length * Math.random() << 0]];
 };
 
-module.exports = test;
+module.exports = see;

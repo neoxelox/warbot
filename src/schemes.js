@@ -9,31 +9,31 @@ const party_scheme = {
     players: [],        // Array of players in the party
     map: {
         path: null,     // Path to world map image of the party
-        countries: {}   // 
+        countries: {}   // Copy of the starting countries in resources
     }
 }
 
 const player_scheme = {
-    id: null,
-    name: null,
-    empire: null,
-    color: null,
-    flag: null,
-    money: null,
-    capital: null,
-    countries: []
+    id: null,           // Player Discord id
+    name: null,         // Player Discord name
+    empire: null,       // Name of Player's Empire
+    color: null,        // Color in HEX of Player's Empire
+    flag: null,         // Flag in PNG of Player's Empire
+    money: null,        // Money of Player's Empire
+    capital: null,      // Capital (Well actually starting country) of Player's Empire
+    countries: []       // Country in posesion of the Player
 }
 
 const country_scheme = {
-    id: null,
-    name: null,
-    color: null,
-    flag: null,
-    area: null,
+    id: null,           // Country ISO2 code
+    name: null,         // Country name (in English)
+    color: null,        // Country random color in HEX
+    flag: null,         // Country flag (originally in SVG)
+    area: null,         // Country total Area in KM²
     stats: {
-        population: null,
-        attack_points: null,
-        defend_points: null
+        population: null,    // Total country population
+        attack_points: null, // Attack Points based on 100 - Population/Area   
+        defend_points: null  // Defend Points based on Population/Area
     }
 }
 
