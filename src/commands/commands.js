@@ -29,5 +29,11 @@ module.exports = {
     delete_name: "delete",
     delete_arg_1: "Party name/id",
     delete_arg_2: "Password if any",
-    delete_description: "Deletes an existing party of WARBOT."
+    delete_description: "Deletes an existing party of WARBOT.",
+
+    // TO-DO
+    roll: require("./roll.js"),
+    roll_name: "roll",
+    // ARGS...
+    roll_description: "Rolls a 100 side dice. You will lose your with that."
 };

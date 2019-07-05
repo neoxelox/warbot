@@ -50,6 +50,11 @@ client.on('message', (message) => {
         case commands.delete_name:
             commands.delete(message,args,parties);
             break;
+        
+        // TO-DO
+        case commands.roll_name:
+            commands.roll(message,args);
+            break;
         default:
             // Unknown command
             message.channel.send(`**Unknown command!** <@${message.author.id}>, type ** *> help* ** .`);

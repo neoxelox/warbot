@@ -22,7 +22,7 @@ async function create(message, args, parties) {
                     newParty.password = (args[3] != undefined ? args[3] : null);
                     newParty.status = "WAITING";
                     
-                    let newSaveDir = `../saves/${newParty.id}`;
+                    let newSaveDir = `../saves/${newParty.id}`; // CHANGE THIS VARIABLE TO STORE THE DATA IN ANOTHER DIRECTORY
                     if(! await existsDir(newSaveDir)) await createDir(newSaveDir);
                     await copyFile("../src/resources/img/map.svg", newSaveDir + "/map.svg");
                     newParty.map.path = newSaveDir;
