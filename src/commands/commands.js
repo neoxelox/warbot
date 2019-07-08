@@ -3,7 +3,7 @@
 module.exports = {
     ping: require("./ping.js"), // can also be done as a hole object named ping...
     ping_name: "ping",
-    ping_description: "Shows the latency in milliseconds between responses of the WARBOT.",
+    ping_description: "Shows the latency in milliseconds between responses of the WARBOT.", // Too long!
 
     fortune: require("./fortune.js"),
     fortune_name: "fortune",
@@ -31,9 +31,22 @@ module.exports = {
     delete_arg_2: "Password if any",
     delete_description: "Deletes an existing party of WARBOT.",
 
+    status: require("./status.js"),
+    status_name: "status",
+    status_arg_1: "Party name/id",
+    status_arg_2: "c/p",
+    status_arg_3: "Country ISO code/name / Player TAG",
+    status_description: "Shows the current status of a WARBOT party.",
+
     // TO-DO
+    invite: require("./invite.js"),
+    invite_name: "invite",
+    invite_arg_1: "Party name/id",
+    invite_arg_2: "User TAG",
+    invite_description: "WARBOT will DM the user with an invitation to your party. IMPORTANT! By Discord's rules the targeted user has to be in a Server which has WARBOT. NOTE! The party password is also send.",
+
     roll: require("./roll.js"),
     roll_name: "roll",
     // ARGS...
-    roll_description: "Rolls a 100 side dice. You will lose your with that."
+    roll_description: "Rolls a 100 side dice. You will lose your turn with that."
 };

@@ -6,9 +6,16 @@ const party_scheme = {
     slots: null,            // Number of players that the party will have. The game doesn't start until it reaches that number
     status: null,           // WAITING (Until the slots are filled), STARTED, FINISHED (If someone wins or it's closed)
     password: null,         // Null for no password, anything else it's the password
+    creator: {              // Creator of the party
+        id: null,           // Creator Discord id
+        name: null,         // Creator Discord name
+        tag: null,          // Creator Discord TAG
+        avatar: null        // Creator Avatar URL
+    },
     players: [],            // Array of players in the party
     map: {
-        path: null,         // Path to world map image of the party
+        path: null,         // Path to last world map image of the party
+        link: null,         // Link to imgur upload of last changed map of the party to show on Discord
         countries: {}       // Copy of the starting countries in resources
     }
 }
@@ -16,14 +23,18 @@ const party_scheme = {
 const player_scheme = {
     id: null,               // Player Discord id
     name: null,             // Player Discord name
+    tag: null,              // Player Discord TAG
+    avatar: null,           // Player Avatar URL
+    turn: false,            // Is the Player turn?
+    fold: false,            // False by default, True when a Player loses his Capital or its Kicked of the party
     empire: null,           // Name of Player's Empire
     color: null,            // Color in HEX of Player's Empire
     flag: null,             // Flag in PNG of Player's Empire
-    capital: null,          // Capital (Well actually starting country) of Player's Empire
-    countries: []           // Country in posesion of the Player
+    capital: null,          // Capital (Well actually starting country) of Player's Empire in ISO2
+    countries: []           // Countries in posesion of the Player in ISO2
 }
 
-const country_scheme = {
+const country_scheme = {    // As I cannot change the default dataset anymore... I'd have been great to have another property like player_owner...
     id: null,               // Country ISO2 code
     name: null,             // Country name (in English)
     color: null,            // Country random color in HEX

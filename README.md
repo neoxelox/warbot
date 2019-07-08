@@ -9,6 +9,10 @@ Just a Discord WARBOT.
 - colors
 - node-fetch
 - nedb
+- svg.js
+- svgdom
+- svg2png
+- imgur
 
 
 

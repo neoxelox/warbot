@@ -1,0 +1,92 @@
+"use strict"
+
+const {RichEmbed} = require('discord.js');
+const colors = require('colors');
+const fs = require('fs');
+const {promisify} = require('util');
+const readFile = promisify(fs.readFile);
+
+async function status(message, args, parties) {
+    if(args[1] != undefined) {
+        try {
+             parties.find({$or: [{ id: parseInt(args[1]) }, { name: args[1].replace(/-|_/g, " ") }]}, async (err, docs) => {
+                 if(docs.length == 1) {
+                    if(args[2] === undefined) {
+                        let oEmbed = new RichEmbed()
+                            .setColor((docs[0].status === "STARTED" ? "#00c853" : ( docs[0].status === "WAITING" ? "#ff6d00" : "#d50000")))
+                            .setAuthor(`${docs[0].name} #${docs[0].id}\nCreated by ${docs[0].creator.name} at ${docs[0].createdAt.toLocaleString()}`,docs[0].creator.avatar)
+                            .addField("NAME", "h", true)
+                            .addField("ID", "1", true)
+                            .addField("ddd", "1", true)
+                            
+                            .setImage(docs[0].map.link) // The footer is so large because Discord doesn't like \t...
+                            .setFooter(`Current status: ${docs[0].status}                                                           ${(docs[0].password === null ? "Public" : "Private")}                                                        Players: ${docs[0].players.length}/${docs[0].slots}`)
+                        message.channel.send(oEmbed);
+                    } else if(args[2] === "c") {
+                        if(args[3] != undefined) {
+                            let country;
+                            country = docs[0].map.countries[args[3].toUpperCase()];
+                            if(country === undefined) {
+                                let inverse = JSON.parse(await readFile("../src/resources/inverse.json"));
+                                country = docs[0].map.countries[inverse[args[3][0].toUpperCase() + args[3].slice(1).replace(/-|_/g, " ")]];
+                            }
+                            if(country != undefined) {
+                                let owner = findCountryOwner(docs[0].players, country.id);
+                                let defCon = JSON.parse(await readFile("../src/resources/countries.json"))[country.id];
+                                let cEmbed = new RichEmbed()
+                                    .setColor((owner != null ? owner.color : country.color))
+                                    .setThumbnail((owner != null ? owner.flag: `https://www.countryflags.io/${country.id}/flat/64.png`)) // I realized Discord doesn't have preview for .svg images... so this is a workaround
+                                    .setAuthor(country.name + (owner != null ? "of the " + owner.empire + " Empire" : ""), (owner != null ? owner.avatar:""))
+                                    .setTitle(`**\`${country.id}\` ${(owner != null ? `${(country.id === owner.capital ? "*capital* and ":"")}property of \`` + owner.name + "\`" : "unclaimed")}**`)
+                                    .setDescription(`**__Area:__ \`${country.area} km²\` \n __Population:__ \`${country.stats.population} humans\` of which the \`${((country.stats.population/defCon.stats.population)-1) * 100}%\` are dead\n __Attack Points:__ \`${country.stats.attack_points}\` \n __Defend Points:__ \`${country.stats.defend_points}\`**`)
+                        
+                                message.channel.send(cEmbed);
+                            } else message.channel.send("No country found with that **\`ISO code\`** or **\`id\`** 🤔");
+                        } else {
+                            message.channel.send(`No **\`[Country ISO code/name]\`** specified for ***> status*** order! <@${message.author.id}>, type ** *> help* ** .`);
+                        }
+                    } else if(args[2] === "p") {
+                        if(args[3] != undefined) {
+                            let player = findByTAG(docs[0].players, args[3]);
+                            if(player != undefined) {
+                                // FOUND TARGETED PLAYER DO SOMETHING...
+                            } else message.channel.send("No player found with that **\`Player TAG\`** 🤔");
+                        } else {
+                            message.channel.send(`No **\`[Player TAG]\`** specified for ***> status*** order! <@${message.author.id}>, type ** *> help* ** .`);
+                        }
+                    } else {
+                        message.channel.send(`No **\`[c/p]\`** specified for ***> status*** order! <@${message.author.id}>, type ** *> help* ** .`);
+                    }
+                 } 
+                 else if(docs.length > 1) {
+                     let msg = "**Multiple parties found!** 🧐 Please specify with the **\`id\`**: \n";
+                     for (let i in docs) { // MAYBE PUT ALSO THE PLAYERS TO HELP SEARCHING
+                         msg += `\`> status ${docs[i].id}\` **Created by** \`${docs[i].creator.name}\` **Created at** \`${docs[i].createdAt.toLocaleString()}\` **Status** \`${docs[i].status}\` \n`;
+                     }
+                     message.channel.send(msg);
+                 } else message.channel.send("No party found with that **\`name\`** or **\`id\`** 🤔");
+             });   
+        } catch (error) {
+             console.log(colors.bgRed.white.bold(" ERROR ") + colors.bgMagenta.white("", message.createdAt.toLocaleString(), "") + colors.bgCyan.white(" TO ") + colors.bgGreen.white("", message.author.username,"") + colors.bgBlack.white(` ${error} `));
+             message.channel.send("Sorry, something went wrong 😓");
+        }
+     }
+     else {
+         message.channel.send(`No **\`[Party name/id]\`** specified for ***> status*** order! <@${message.author.id}>, type ** *> help* ** .`);
+     }
+}
+
+function findCountryOwner(players,country) {
+    for(let i = 0; i < players.length; i++)
+        for(let j = 0; j < player[i].countries.length; j++)
+            if(player[i].countries[j] === country) return player[i];
+    return null;
+}
+
+function findByTAG(players,tag) {
+    for(let i = 0; i < players.length; i++)
+            if(player[i].tag === tag) return player[i];
+    return null;
+}
+
+module.exports = status;

@@ -25,12 +25,13 @@ client.on('ready', () => {
 
 client.on('message', (message) => {
     if(message.author.equals(client.user)) return;
+    if(message.author.bot === true) return;
     if(!message.content.startsWith(PREFIX)) return;
     // LOG
     console.log(colors.bgBlue.white.bold(" MESSAGE ") + colors.bgMagenta.white("", message.createdAt.toLocaleString(), "") + colors.bgCyan.white(" FROM ") + colors.bgGreen.white("", message.author.username,"") + colors.bgBlack.white("", message.content, ""));
     
     var args = message.content.substring(PREFIX.length).split(" ");
-
+    
     switch (args[0].toLowerCase()) {
         case commands.help_name:
             commands.help(message,args);
@@ -50,8 +51,14 @@ client.on('message', (message) => {
         case commands.delete_name:
             commands.delete(message,args,parties);
             break;
-        
+        case commands.status_name:
+            commands.status(message,args,parties);
+            break;
+            
         // TO-DO
+        case commands.invite_name:
+            commands.invite(client,message,args,parties);
+            break;
         case commands.roll_name:
             commands.roll(message,args);
             break;
