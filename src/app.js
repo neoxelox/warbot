@@ -51,14 +51,19 @@ client.on('message', (message) => {
         case commands.delete_name:
             commands.delete(message,args,parties);
             break;
+        case commands.join_name:
+            commands.join(message,args,parties);
+            break;
+        case commands.leave_name:
+            commands.leave(message,args,parties);
+            break;
         case commands.status_name:
             commands.status(message,args,parties);
             break;
-            
-        // TO-DO
         case commands.invite_name:
             commands.invite(client,message,args,parties);
             break;
+        // TO-DO
         case commands.roll_name:
             commands.roll(message,args);
             break;

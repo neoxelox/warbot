@@ -9,7 +9,7 @@ async function invite(client,message,args,parties) {
                     if(args[2] != undefined){
                         let user = await client.users.find(find => find.tag == args[2]);
                         if(user != undefined) {
-                            user.send(`**Hey \`${user.username}\`** 👋, \`${message.author.username}\` has invited you to **join** the ${(docs[0].password != null ? "private" : "public")} party \`${docs[0].name}\`!\n**Type** \`> join ${docs[0].id} ${(docs[0].password != null ? docs[0].password : "")}\` to join now!`);
+                            user.send(`**Hey \`${user.username}\`** 👋, \`${message.author.username}\` has invited you to **join** the ${(docs[0].password != null ? "private" : "public")} party \`${docs[0].name}\`!\n**Type:**\n\`> join ${docs[0].id} ${(docs[0].password != null ? docs[0].password : "")}\` to join now!\n\`> status ${docs[0].id}\` to see the current status of the party.`);
                             // MAYBE SEND A RICHEMBED LIKE STATUS PARTY
                             
                             message.channel.send(`Successfully sent an invitation to **\`${user.username}\`** to join party **\`${docs[0].name}\`**! 📤`);

@@ -36,15 +36,26 @@ module.exports = {
     status_arg_1: "Party name/id",
     status_arg_2: "c/p",
     status_arg_3: "Country ISO code/name / Player TAG",
-    status_description: "Shows the current status of a WARBOT party.",
+    status_description: "Shows the current status of a WARBOT party. 2 Last arguments are optional.",
 
-    // TO-DO
+    join: require("./join.js"),
+    join_name: "join",
+    join_arg_1: "Party name/id",
+    join_arg_2: "Password if any",
+    join_description: "Allows you to join an existing party of WARBOT.",
+
+    leave: require("./leave.js"),
+    leave_name: "leave",
+    leave_arg_1: "Party name/id",
+    leave_description: "Allows you to leave an existing party of WARBOT.",
+
     invite: require("./invite.js"),
     invite_name: "invite",
     invite_arg_1: "Party name/id",
     invite_arg_2: "User TAG",
     invite_description: "WARBOT will DM the user with an invitation to your party. IMPORTANT! By Discord's rules the targeted user has to be in a Server which has WARBOT. NOTE! The party password is also send.",
 
+    // TO-DO
     roll: require("./roll.js"),
     roll_name: "roll",
     // ARGS...

@@ -5,6 +5,7 @@ const colors = require('colors');
 const fs = require('fs');
 const {promisify} = require('util');
 const readFile = promisify(fs.readFile);
+const {table} = require('table');
 
 async function status(message, args, parties) {
     if(args[1] != undefined) {
@@ -12,13 +13,36 @@ async function status(message, args, parties) {
              parties.find({$or: [{ id: parseInt(args[1]) }, { name: args[1].replace(/-|_/g, " ") }]}, async (err, docs) => {
                  if(docs.length == 1) {
                     if(args[2] === undefined) {
+                        let gblConf = {columns: {0: {alignment: 'left', width: 25}, 1: {alignment: 'center', width: 9}, 2: {alignment: 'left', width: 5}}};
+                        let globalTable = []; globalTable[0] = ['PLAYER TAG', 'COUNTRIES', 'POWER'];
+                        let tPlayer = null;
+                        for(let i = 0; i < docs[0].players.length; i++) {
+                            let temp = [];
+                            let playerPower = 0;
+                            let playerCountries = "";
+                            for(let j = 0; j < docs[0].players[i].countries.length; j++) {
+                                let currentCountry = docs[0].map.countries[docs[0].players[i].countries[j]];
+                                playerCountries += `${currentCountry.id} `;
+                                playerPower += currentCountry.stats.attack_points;
+                                playerPower += currentCountry.stats.defend_points;
+                            }
+                            if(!docs[0].players[i].fold) {
+                                temp[0] = docs[0].players[i].tag;
+                                temp[1] = playerCountries;
+                                temp[2] = playerPower;
+                                if(docs[0].players[i].turn) tPlayer = docs[0].players[i];
+                            } else {
+                                temp[0] = strikethroughText(docs[0].players[i].tag);
+                                temp[1] = "---------";
+                                temp[2] = "-----";
+                            }
+                            
+                            globalTable[i+1] = temp;
+                        }
                         let oEmbed = new RichEmbed()
                             .setColor((docs[0].status === "STARTED" ? "#00c853" : ( docs[0].status === "WAITING" ? "#ff6d00" : "#d50000")))
-                            .setAuthor(`${docs[0].name} #${docs[0].id}\nCreated by ${docs[0].creator.name} at ${docs[0].createdAt.toLocaleString()}`,docs[0].creator.avatar)
-                            .addField("NAME", "h", true)
-                            .addField("ID", "1", true)
-                            .addField("ddd", "1", true)
-                            
+                            .setAuthor(`${docs[0].name} #${docs[0].id}\nCreated by ${docs[0].creator.name} at ${docs[0].createdAt.toLocaleString()}`,docs[0].creator.avatar) //(tPlayer != null ? `` : "")
+                            .setDescription('```null\n' + table(globalTable, gblConf) + '\n```\`Type\` **\`> status p [Player TAG]\`** \`for a detailed player view.\`\n' + (tPlayer != null? `It's <@${tPlayer.id}>'s turn!` : ""))
                             .setImage(docs[0].map.link) // The footer is so large because Discord doesn't like \t...
                             .setFooter(`Current status: ${docs[0].status}                                                           ${(docs[0].password === null ? "Public" : "Private")}                                                        Players: ${docs[0].players.length}/${docs[0].slots}`)
                         message.channel.send(oEmbed);
@@ -50,6 +74,13 @@ async function status(message, args, parties) {
                             let player = findByTAG(docs[0].players, args[3]);
                             if(player != undefined) {
                                 // FOUND TARGETED PLAYER DO SOMETHING...
+                                let pEmbed = new RichEmbed()
+                                    .setColor(player.color)
+                                    .setAuthor(player.name, player.avatar)
+                                    .setThumbnail(player.flag)
+                                    
+                                    .setDescription(`Page for ${player.name} in construction!`)
+                                message.channel.send(pEmbed);
                             } else message.channel.send("No player found with that **\`Player TAG\`** 🤔");
                         } else {
                             message.channel.send(`No **\`[Player TAG]\`** specified for ***> status*** order! <@${message.author.id}>, type ** *> help* ** .`);
@@ -78,15 +109,21 @@ async function status(message, args, parties) {
 
 function findCountryOwner(players,country) {
     for(let i = 0; i < players.length; i++)
-        for(let j = 0; j < player[i].countries.length; j++)
-            if(player[i].countries[j] === country) return player[i];
+        for(let j = 0; j < players[i].countries.length; j++)
+            if(players[i].countries[j] === country) return players[i];
     return null;
 }
 
 function findByTAG(players,tag) {
     for(let i = 0; i < players.length; i++)
-            if(player[i].tag === tag) return player[i];
+            if(players[i].tag === tag) return players[i];
     return null;
+}
+
+function strikethroughText(text) {
+    return text.split('').reduce(function(acc, char) {
+      return acc + char + '\u0336';
+    }, '');
 }
 
 module.exports = status;

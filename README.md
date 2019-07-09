@@ -13,6 +13,8 @@ Just a Discord WARBOT.
 - svgdom
 - svg2png
 - imgur
+- table
+- randomcolor
 
 
 
