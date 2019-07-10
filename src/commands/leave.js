@@ -13,6 +13,7 @@ async function leave(message, args, parties) {
                         let conds = {$unset:{}}; conds.$unset[`players.${fPlayer.index}`] = true;
                         parties.update({_id: docs[0]._id}, conds, {}, (err) => {
                             if(!err) message.channel.send(`**Successfully leaved party** \`${docs[0].name}\` **with id** \`${docs[0].id}\`**.** 😥`);
+                            // if(docs[0].players.length - 1 === 1) trigger FINISHED game logic!
                         });
                     } else {
                         message.channel.send("**You are not in this party!** 😅");

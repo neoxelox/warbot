@@ -49,6 +49,13 @@ module.exports = {
     leave_arg_1: "Party name/id",
     leave_description: "Allows you to leave an existing party of WARBOT.",
 
+    change: require("./change.js"),
+    change_name: "change",
+    change_arg_1: "Party name/id",
+    change_arg_2: "c/e/f",
+    change_arg_3: "HEX Color / Empire Name / Flag URL",
+    change_description: "Allows you to change your profile settings of an existing party of WARBOT.",
+
     invite: require("./invite.js"),
     invite_name: "invite",
     invite_arg_1: "Party name/id",

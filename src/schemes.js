@@ -31,7 +31,9 @@ const player_scheme = {
     color: null,            // Color in HEX of Player's Empire
     flag: null,             // Flag in PNG of Player's Empire
     capital: null,          // Capital (Well actually starting country) of Player's Empire in ISO2
-    countries: []           // Countries in posesion of the Player in ISO2
+    countries: [],          // Countries in posesion of the Player in ISO2
+    mapPath: null,          // Cached colored map, generated when a player conquers some country
+    mapLink: null           // Link to Cached colored map, generated when a player conquers some country
 }
 
 const country_scheme = {    // As I cannot change the default dataset anymore... I'd have been great to have another property like player_owner...

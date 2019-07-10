@@ -57,6 +57,9 @@ client.on('message', (message) => {
         case commands.leave_name:
             commands.leave(message,args,parties);
             break;
+        case commands.change_name:
+            commands.change(message,args,parties);
+            break;
         case commands.status_name:
             commands.status(message,args,parties);
             break;

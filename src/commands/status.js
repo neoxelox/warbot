@@ -42,7 +42,7 @@ async function status(message, args, parties) {
                         let oEmbed = new RichEmbed()
                             .setColor((docs[0].status === "STARTED" ? "#00c853" : ( docs[0].status === "WAITING" ? "#ff6d00" : "#d50000")))
                             .setAuthor(`${docs[0].name} #${docs[0].id}\nCreated by ${docs[0].creator.name} at ${docs[0].createdAt.toLocaleString()}`,docs[0].creator.avatar) //(tPlayer != null ? `` : "")
-                            .setDescription('```null\n' + table(globalTable, gblConf) + '\n```\`Type\` **\`> status p [Player TAG]\`** \`for a detailed player view.\`\n' + (tPlayer != null? `It's <@${tPlayer.id}>'s turn!` : ""))
+                            .setDescription('```null\n' + table(globalTable, gblConf) + '\n```\`Type\` **\`> status ' + docs[0].id + ' p [Player TAG]\`** \`for a detailed player view.\`\n' + (tPlayer != null? `It's <@${tPlayer.id}>'s turn!` : ""))
                             .setImage(docs[0].map.link) // The footer is so large because Discord doesn't like \t...
                             .setFooter(`Current status: ${docs[0].status}                                                           ${(docs[0].password === null ? "Public" : "Private")}                                                        Players: ${docs[0].players.length}/${docs[0].slots}`)
                         message.channel.send(oEmbed);
@@ -61,7 +61,7 @@ async function status(message, args, parties) {
                                     .setColor((owner != null ? owner.color : country.color))
                                     .setThumbnail((owner != null ? owner.flag: `https://www.countryflags.io/${country.id}/flat/64.png`)) // I realized Discord doesn't have preview for .svg images... so this is a workaround
                                     .setAuthor(country.name + (owner != null ? "of the " + owner.empire + " Empire" : ""), (owner != null ? owner.avatar:""))
-                                    .setTitle(`**\`${country.id}\` ${(owner != null ? `${(country.id === owner.capital ? "*capital* and ":"")}property of \`` + owner.name + "\`" : "unclaimed")}**`)
+                                    .setTitle(`**\`${country.id}\` :flag_${country.id.toLowerCase()}: ${(owner != null ? `${(country.id === owner.capital ? "*capital* and ":"")}property of \`` + owner.name + "\`" : "unclaimed")}**`)
                                     .setDescription(`**__Area:__ \`${country.area} km²\` \n __Population:__ \`${country.stats.population} humans\` of which the \`${((country.stats.population/defCon.stats.population)-1) * 100}%\` are dead\n __Attack Points:__ \`${country.stats.attack_points}\` \n __Defend Points:__ \`${country.stats.defend_points}\`**`)
                         
                                 message.channel.send(cEmbed);
@@ -73,13 +73,36 @@ async function status(message, args, parties) {
                         if(args[3] != undefined) {
                             let player = findByTAG(docs[0].players, args[3]);
                             if(player != undefined) {
-                                // FOUND TARGETED PLAYER DO SOMETHING...
+                                let playerAttackP = 0;
+                                let playerDefendP = 0;
+                                let playerPopulation = 0;
+                                let playerCountries = "";
+                                for(let i = 0; i < player.countries.length; i++) {
+                                    let currentCountry = docs[0].map.countries[player.countries[i]];
+                                    playerCountries += `${currentCountry.id} `;
+                                    playerAttackP += currentCountry.stats.attack_points;
+                                    playerDefendP += currentCountry.stats.defend_points;
+                                    playerPopulation += currentCountry.stats.population;
+                                }
+
                                 let pEmbed = new RichEmbed()
                                     .setColor(player.color)
-                                    .setAuthor(player.name, player.avatar)
+                                    .setAuthor(`${player.tag} ${(player.fold? `${player.name} [LOST ❌]`: (player.turn ? `[TURN ⏳]`: ""))}`, player.avatar)
                                     .setThumbnail(player.flag)
                                     
-                                    .setDescription(`Page for ${player.name} in construction!`)
+                                    .addField("**EMPIRE**", `\`${player.empire}\``, true)
+                                    .addField("**CAPITAL**", `\`${(player.capital != null ? player.capital : "-")}\``, true)
+                                    
+                                    .addField("**COUNTRIES**", `\`${player.countries.length}\``, true)
+                                    .addField("**POPULATION**", `\`${playerPopulation}\``, true)
+
+                                    .addField("**ATTACK POINTS**", `\`${playerAttackP}\``, true)
+                                    .addField("**DEFEND POINTS**", `\`${playerDefendP}\``, true)
+                                    
+                                    .setImage(player.mapLink)
+
+                                    .setFooter(`Country List: ${(playerCountries != "" ? playerCountries : "-")}`, `http://www.singlecolorimage.com/get/${player.color}/50x50.png`)
+
                                 message.channel.send(pEmbed);
                             } else message.channel.send("No player found with that **\`Player TAG\`** 🤔");
                         } else {
@@ -98,8 +121,8 @@ async function status(message, args, parties) {
                  } else message.channel.send("No party found with that **\`name\`** or **\`id\`** 🤔");
              });   
         } catch (error) {
-             console.log(colors.bgRed.white.bold(" ERROR ") + colors.bgMagenta.white("", message.createdAt.toLocaleString(), "") + colors.bgCyan.white(" TO ") + colors.bgGreen.white("", message.author.username,"") + colors.bgBlack.white(` ${error} `));
-             message.channel.send("Sorry, something went wrong 😓");
+            console.log(colors.bgRed.white.bold(" ERROR ") + colors.bgMagenta.white("", message.createdAt.toLocaleString(), "") + colors.bgCyan.white(" TO ") + colors.bgGreen.white("", message.author.username,"") + colors.bgBlack.white(` ${error} `));
+            message.channel.send("Sorry, something went wrong 😓");
         }
      }
      else {

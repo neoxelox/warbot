@@ -22,7 +22,7 @@ async function see(message, args) {
             .setColor(country.color)
             .setThumbnail(`https://www.countryflags.io/${country.id}/flat/64.png`) // I realized Discord doesn't have preview for .svg images... so this is a workaround
             .setAuthor(country.name)
-            .setTitle(`**\`${country.id}\`**`)
+            .setTitle(`**\`${country.id}\` :flag_${country.id.toLowerCase()}:**`)
             .setDescription(`**__Area:__ \`${country.area} km²\` \n __Population:__ \`${country.stats.population} humans\` \n __Attack Points:__ \`${country.stats.attack_points}\` \n __Defend Points:__ \`${country.stats.defend_points}\`**`)
 
         message.channel.send(cEmbed);

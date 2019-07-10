@@ -3,6 +3,7 @@
 const colors = require('colors');
 const {player_scheme} = require("../schemes.js");
 var randomColor = require('randomcolor');
+const {RichEmbed} = require('discord.js');
 
 async function join(message, args, parties) {
     if(args[1] != undefined) {
@@ -23,10 +24,19 @@ async function join(message, args, parties) {
                                 newPlayer.empire = newPlayer.name + "'s Empire";
                                 newPlayer.color = randomColor().slice(1);
                                 newPlayer.flag = message.author.avatarURL;
+                                newPlayer.mapPath = docs[0].map.path + `/${message.author.tag}.png`;
+                                newPlayer.mapLink = docs[0].map.link;
 
                                 parties.update({_id: docs[0]._id}, { $push: { players: newPlayer } }, {}, (err) => {
-                                    if(!err) message.channel.send(`**Successfully joined party** \`${docs[0].name}\` **with id** \`${docs[0].id}\`**.** 👍`);
-                                    // if(docs[0].players.length + 1 === docs[0].slots) trigger START game logic! INSIDE THE ABOVE IF
+                                    if(!err) {
+                                        let pEmbed = new RichEmbed()
+                                            .setColor(newPlayer.color)
+                                            .setAuthor(newPlayer.empire, `http://www.singlecolorimage.com/get/${newPlayer.color}/50x50.png`)
+                                            .setThumbnail(newPlayer.flag)
+                                            .setDescription(`**Successfully joined party** \`${docs[0].name}\` **with id** \`${docs[0].id}\`**.** 👍\nTo change the default/random profile values **type:**\n\`> change ${docs[0].id} c [HEX Color]\` to change your profile/map color.\n\`> change ${docs[0].id} e [Empire Name]\` to change your Empire's name.\n\`> change ${docs[0].id} f [Flag URL]\` to change your Empire's Flag.`)
+                                        message.channel.send(pEmbed);
+                                        // if(docs[0].players.length + 1 === docs[0].slots) trigger START game logic!
+                                    }                                    
                                 });
                             } else {
                                 message.channel.send("**You have already joined that party!** 😤");
