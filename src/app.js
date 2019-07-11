@@ -14,11 +14,25 @@ const parties = new database({
     timestampData: true
 });
 
-client.on('ready', () => {
+const fs = require('fs');
+const {promisify} = require('util');
+const readFile = promisify(fs.readFile);
+const window = require('svgdom');
+const fab = require('svg.js')(window);
+const doc = window.document;
+const frame = fab(doc.documentElement);
+
+client.on('ready', async () => {
     console.log(colors.bgRed.white(' Assembling weapons... '));
+    //
     parties.loadDatabase();
+    parties.persistence.setAutocompactionInterval(300*1000);
+    //
     console.log(colors.bgYellow.white(' Setting up the terrain... '));
-    //...
+    //
+    let svgRaw = await readFile("./resources/img/map.svg", "utf8");
+    frame.svg(svgRaw);
+    //
     console.log(colors.bgGreen.white(` Sergeant! ${client.user.tag} At your orders! `));
     client.user.setActivity(`${PREFIX}help`); // Playing... status
 });
@@ -52,10 +66,10 @@ client.on('message', (message) => {
             commands.delete(message,args,parties);
             break;
         case commands.join_name:
-            commands.join(message,args,parties);
+            commands.join(message,args,parties,client,frame);
             break;
         case commands.leave_name:
-            commands.leave(message,args,parties);
+            commands.leave(message,args,parties,client,frame);
             break;
         case commands.change_name:
             commands.change(message,args,parties);

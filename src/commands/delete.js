@@ -12,18 +12,25 @@ async function remove(message, args, parties) {
        try {
             parties.find({$or: [{ id: parseInt(args[1]) }, { name: args[1].replace(/-|_/g, " ") }]}, async (err, docs) => {
                 if(docs.length == 1) {
-                    if((docs[0].password === null) || (docs[0].password === args[2])) {
-                        if(await existsFile(docs[0].map.path + "/map.png")) await deleteFile(docs[0].map.path + "/map.png");
-                        if(await existsFile(docs[0].map.path)) await deleteDir(docs[0].map.path);
+                    if(docs[0].status === "WAITING" || message.author.id == "157613064810790912") {
+                        if((docs[0].password === null) || (docs[0].password === args[2])) {
+                            // find better way
+                            if(await existsFile(docs[0].map.path + "/map.png")) await deleteFile(docs[0].map.path + "/map.png");
+                            for(let i = 0; i< docs[0].players.length; i++) if(await existsFile(docs[0].players[i].mapPath)) await deleteFile(docs[0].players[i].mapPath);
+                            //
+                            if(await existsFile(docs[0].map.path)) await deleteDir(docs[0].map.path);
 
-                        let remId = docs[0].id;
-                        let remName = docs[0].name;
-                        parties.remove({_id: docs[0]._id}, (err, nRemoved) => {
-                            if(!err) message.channel.send(`**Successfully deleted party** \`${remName}\` **with id** \`${remId}\`**.** 💥`);
-                        });
-                    } else {
-                        message.channel.send("**Wrong password for the party!** 🤨");
-                    }
+                            let remId = docs[0].id;
+                            let remName = docs[0].name;
+                            parties.remove({_id: docs[0]._id}, (err, nRemoved) => {
+                                if(!err) message.channel.send(`**Successfully deleted party** \`${remName}\` **with id** \`${remId}\`**.** 💥`);
+                            });
+                        } else {
+                            message.channel.send("**Wrong password for the party!** 🤨");
+                        }
+                    } else if(docs[0].status === "STARTED") {
+                        message.channel.send("**Only ADMINISTRATORS can delete a STARTED party, DM to Neoxelox#9588** 😅");
+                    } else message.channel.send("**You cannot delete a FINISHED party** 😅");
                 } 
                 else if(docs.length > 1) {
                     let msg = "**Multiple parties found!** 🧐 Please specify with the **\`id\`**: \n";

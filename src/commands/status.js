@@ -13,9 +13,10 @@ async function status(message, args, parties) {
              parties.find({$or: [{ id: parseInt(args[1]) }, { name: args[1].replace(/-|_/g, " ") }]}, async (err, docs) => {
                  if(docs.length == 1) {
                     if(args[2] === undefined) {
-                        let gblConf = {columns: {0: {alignment: 'left', width: 25}, 1: {alignment: 'center', width: 9}, 2: {alignment: 'left', width: 5}}};
+                        let gblConf = {columns: {0: {alignment: 'left', width: 25}, 1: {alignment: 'left', width: 9}, 2: {alignment: 'left', width: 5}}};
                         let globalTable = []; globalTable[0] = ['PLAYER TAG', 'COUNTRIES', 'POWER'];
                         let tPlayer = null;
+                        let wPlayer = null;
                         for(let i = 0; i < docs[0].players.length; i++) {
                             let temp = [];
                             let playerPower = 0;
@@ -30,6 +31,7 @@ async function status(message, args, parties) {
                                 temp[0] = docs[0].players[i].tag;
                                 temp[1] = playerCountries;
                                 temp[2] = playerPower;
+                                if(docs[0].status === "FINISHED") wPlayer = docs[0].players[i];
                                 if(docs[0].players[i].turn) tPlayer = docs[0].players[i];
                             } else {
                                 temp[0] = strikethroughText(docs[0].players[i].tag);
@@ -42,7 +44,7 @@ async function status(message, args, parties) {
                         let oEmbed = new RichEmbed()
                             .setColor((docs[0].status === "STARTED" ? "#00c853" : ( docs[0].status === "WAITING" ? "#ff6d00" : "#d50000")))
                             .setAuthor(`${docs[0].name} #${docs[0].id}\nCreated by ${docs[0].creator.name} at ${docs[0].createdAt.toLocaleString()}`,docs[0].creator.avatar) //(tPlayer != null ? `` : "")
-                            .setDescription('```null\n' + table(globalTable, gblConf) + '\n```\`Type\` **\`> status ' + docs[0].id + ' p [Player TAG]\`** \`for a detailed player view.\`\n' + (tPlayer != null? `It's <@${tPlayer.id}>'s turn!` : ""))
+                            .setDescription('```null\n' + table(globalTable, gblConf) + '\n```\`Type\` **\`> status ' + docs[0].id + ' p [Player TAG]\`** \`for a detailed player view.\`\n' + (wPlayer != null ? `**🎊 <@${wPlayer.id}> HAS WON THIS PARTY! 🎊**`: (tPlayer != null? `It's <@${tPlayer.id}>'s turn!` : "")))
                             .setImage(docs[0].map.link) // The footer is so large because Discord doesn't like \t...
                             .setFooter(`Current status: ${docs[0].status}                                                           ${(docs[0].password === null ? "Public" : "Private")}                                                        Players: ${docs[0].players.length}/${docs[0].slots}`)
                         message.channel.send(oEmbed);
@@ -87,11 +89,11 @@ async function status(message, args, parties) {
 
                                 let pEmbed = new RichEmbed()
                                     .setColor(player.color)
-                                    .setAuthor(`${player.tag} ${(player.fold? `${player.name} [LOST ❌]`: (player.turn ? `[TURN ⏳]`: ""))}`, player.avatar)
+                                    .setAuthor(`${player.tag} ${(player.fold? `${player.name} [LOST ❌]`:(docs[0].status === "FINISHED" ? `[WINNER 🏆]` : (player.turn ? `[TURN ⏳]`: "")))}`, player.avatar)
                                     .setThumbnail(player.flag)
                                     
                                     .addField("**EMPIRE**", `\`${player.empire}\``, true)
-                                    .addField("**CAPITAL**", `\`${(player.capital != null ? player.capital : "-")}\``, true)
+                                    .addField("**CAPITAL**", `\`${(player.capital != null ? docs[0].map.countries[player.capital].name : "-")}\``, true)
                                     
                                     .addField("**COUNTRIES**", `\`${player.countries.length}\``, true)
                                     .addField("**POPULATION**", `\`${playerPopulation}\``, true)
