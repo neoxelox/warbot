@@ -62,9 +62,19 @@ module.exports = {
     invite_arg_2: "User TAG",
     invite_description: "WARBOT will DM the user with an invitation to your party. IMPORTANT! By Discord's rules the targeted user has to be in a Server which has WARBOT. NOTE! The party password is also send.",
 
-    // TO-DO
+    list: require("./list.js"),
+    list_name: "list",
+    list_arg_1: "waiting/started/finished or nothing, to show all",
+    list_description: "Shows all the parties of WARBOT matching the query.",
+
+    conquer: require("./conquer.js"),
+    conquer_name: "conquer",
+    conquer_arg_1: "Party name/id",
+    conquer_arg_2: "Country ISO code/name",
+    conquer_description: "Tries to conquer the specified country. Then passes turn.",
+
     roll: require("./roll.js"),
     roll_name: "roll",
-    // ARGS...
-    roll_description: "Rolls a 100 side dice. You will lose your turn with that."
+    roll_arg_1: "Party name/id",
+    roll_description: "Rolls a 100 side dice which points add to attack or defense of the player's Capital. Doesn't work if you lost your Capital. Then passes turn."
 };

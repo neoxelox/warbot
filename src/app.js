@@ -80,9 +80,14 @@ client.on('message', (message) => {
         case commands.invite_name:
             commands.invite(client,message,args,parties);
             break;
-        // TO-DO
+        case commands.list_name:
+            commands.list(message,args,parties);
+            break;
+        case commands.conquer_name:
+            commands.conquer(message,args,parties,client,frame);
+            break;
         case commands.roll_name:
-            commands.roll(message,args);
+            commands.roll(message,args,parties,client);
             break;
         default:
             // Unknown command

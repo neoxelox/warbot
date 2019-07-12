@@ -6,6 +6,7 @@ const colors = require('colors');
 const deleteFile = promisify(fs.unlink);
 const deleteDir = promisify(fs.rmdir);
 const existsFile = promisify(fs.exists);
+const readDir = promisify(fs.readdir);
 
 async function remove(message, args, parties) {
     if(args[1] != undefined) {
@@ -14,12 +15,11 @@ async function remove(message, args, parties) {
                 if(docs.length == 1) {
                     if(docs[0].status === "WAITING" || message.author.id == "157613064810790912") {
                         if((docs[0].password === null) || (docs[0].password === args[2])) {
-                            // find better way
-                            if(await existsFile(docs[0].map.path + "/map.png")) await deleteFile(docs[0].map.path + "/map.png");
-                            for(let i = 0; i< docs[0].players.length; i++) if(await existsFile(docs[0].players[i].mapPath)) await deleteFile(docs[0].players[i].mapPath);
-                            //
-                            if(await existsFile(docs[0].map.path)) await deleteDir(docs[0].map.path);
-
+                            if(await existsFile(docs[0].map.path)) {
+                                let files = await readDir(docs[0].map.path);
+                                for(let i = 0; i < files.length; i++) await deleteFile(docs[0].map.path + "/" + files[i]);
+                                deleteDir(docs[0].map.path);
+                            }                            
                             let remId = docs[0].id;
                             let remName = docs[0].name;
                             parties.remove({_id: docs[0]._id}, (err, nRemoved) => {

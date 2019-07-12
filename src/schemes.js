@@ -26,7 +26,7 @@ const player_scheme = {
     tag: null,              // Player Discord TAG
     avatar: null,           // Player Avatar URL
     turn: false,            // Is the Player turn?
-    fold: false,            // False by default, True when a Player loses his Capital or its Kicked of the party
+    fold: false,            // False by default, True when a Player loses all countries or its kicked of the party
     empire: null,           // Name of Player's Empire
     color: null,            // Color in HEX of Player's Empire
     flag: null,             // Flag in PNG of Player's Empire

@@ -10,10 +10,11 @@ const createDir = promisify(fs.mkdir);
 const copyFile = promisify(fs.copyFile);
 
 const maxPlayers = 125;
+const minPlayers = 2;
 
 async function create(message, args, parties) {
     if(args[1] != undefined) {
-        if(args[2] != undefined && (args[2] <= maxPlayers && args[2] > 0)) {
+        if(args[2] != undefined && (args[2] <= maxPlayers && args[2] >= minPlayers)) {
             try {
                 parties.find({}).sort({ id: -1 }).limit(1).exec( async (err, docs) => {
                     let newParty = Object.assign({}, party_scheme);
@@ -46,7 +47,7 @@ async function create(message, args, parties) {
             }
         }
         else {
-            if(args[2] != undefined) message.channel.send(`Specified **\`[Slots]\`** passes max/min for ***> create*** order! <@${message.author.id}>, **max \`${maxPlayers}\` min \`1\`.**`);
+            if(args[2] != undefined) message.channel.send(`Specified **\`[Slots]\`** passes max/min for ***> create*** order! <@${message.author.id}>, **max \`${maxPlayers}\` min \`${minPlayers}\`.**`);
             else message.channel.send(`No **\`[Slots]\`** specified for ***> create*** order! <@${message.author.id}>, type ** *> help* ** .`);
         }
     }

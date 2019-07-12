@@ -62,12 +62,12 @@ async function status(message, args, parties) {
                                 let cEmbed = new RichEmbed()
                                     .setColor((owner != null ? owner.color : country.color))
                                     .setThumbnail((owner != null ? owner.flag: `https://www.countryflags.io/${country.id}/flat/64.png`)) // I realized Discord doesn't have preview for .svg images... so this is a workaround
-                                    .setAuthor(country.name + (owner != null ? "of the " + owner.empire + " Empire" : ""), (owner != null ? owner.avatar:""))
-                                    .setTitle(`**\`${country.id}\` :flag_${country.id.toLowerCase()}: ${(owner != null ? `${(country.id === owner.capital ? "*capital* and ":"")}property of \`` + owner.name + "\`" : "unclaimed")}**`)
+                                    .setAuthor(country.name + (owner != null ? " of the " + owner.empire + " Empire" : ""), (owner != null ? owner.avatar:""))
+                                    .setTitle(`**\`${country.id}\` :flag_${country.id.toLowerCase()}: ${(owner != null ? `${(country.id === owner.capital ? "*capital*  and ":"")}property of \`` + owner.name + "\`" : "unclaimed")}**`)
                                     .setDescription(`**__Area:__ \`${country.area} km²\` \n __Population:__ \`${country.stats.population} humans\` of which the \`${((country.stats.population/defCon.stats.population)-1) * 100}%\` are dead\n __Attack Points:__ \`${country.stats.attack_points}\` \n __Defend Points:__ \`${country.stats.defend_points}\`**`)
                         
                                 message.channel.send(cEmbed);
-                            } else message.channel.send("No country found with that **\`ISO code\`** or **\`id\`** 🤔");
+                            } else message.channel.send("No country found with that **\`ISO code\`** or **\`name\`** 🤔");
                         } else {
                             message.channel.send(`No **\`[Country ISO code/name]\`** specified for ***> status*** order! <@${message.author.id}>, type ** *> help* ** .`);
                         }

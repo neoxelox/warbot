@@ -8,19 +8,20 @@ async function leave(message, args, parties, client, frame) {
        try {
             parties.find({$or: [{ id: parseInt(args[1]) }, { name: args[1].replace(/-|_/g, " ") }]}, async (err, docs) => {
                 if(docs.length == 1) {
-                    if(docs[0].status != "FINISHED") {
+                    if(docs[0].status === "WAITING") {
                         let fPlayer = findByID(docs[0].players, message.author.id);
                         if(fPlayer != null) {
                             //let conds = {$set:{}}; conds.$set[`players.${fPlayer.index}.fold`] = true;
                             let conds = {$unset:{}}; conds.$unset[`players.${fPlayer.index}`] = true;
                             parties.update({_id: docs[0]._id}, conds, {}, (err) => {
                                 if(!err) message.channel.send(`**Successfully leaved party** \`${docs[0].name}\` **with id** \`${docs[0].id}\`**.** 😥`);
-                                if(docs[0].players.length - 1 === 1) gameFinish(client, docs[0]._id, parties);
+                                if(docs[0].players.length - 1 === 1) gameFinish(client, docs[0]._id, parties); // PROBABLY NOT A GOOD IDEA TO CALL THIS IN HERE...
                             });
                         } else {
                             message.channel.send("**You are not in this party!** 😅");
                         }
-                    } else message.channel.send("**You cannot leave if the party has already finished!** 😅");
+                    }   else if(docs[0].status === "STARTED") message.channel.send("**You cannot leave if the party has already started!** 😅");
+                        else message.channel.send("**You cannot leave if the party has already finished!** 😅");
                 } 
                 else if(docs.length > 1) {
                     let msg = "**Multiple parties found!** 🧐 Please specify with the **\`id\`**: \n";
